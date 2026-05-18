@@ -6,6 +6,8 @@ A custom Home Assistant card that keeps the look and feel of the official `Tile`
 >
 > This card is currently experimental and still in testing. Options, behavior, and configuration details may change while the project evolves.
 
+![Tile Slider Card example](img/example.png)
+
 ## Why This Exists
 
 The goal of this card is to preserve the visual style of Home Assistant's official `Tile` card while allowing you to control a value with a slider without using extra dashboard space.
