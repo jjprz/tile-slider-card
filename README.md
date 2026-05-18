@@ -1,91 +1,91 @@
 # Tile Slider Card
 
-Una tarjeta personalizada para Home Assistant que mantiene el aspecto de la tarjeta `Tile`, pero añade un slider compacto dentro del mismo espacio.
+A custom Home Assistant card that keeps the look and feel of the official `Tile` card, while adding a compact slider inside the same card footprint.
 
-## Por qué existe
+## Why This Exists
 
-La idea de esta tarjeta es conservar el estilo visual de la `Tile` oficial de Home Assistant y, al mismo tiempo, poder controlar un valor con un slider sin ocupar más espacio del necesario.
+The goal of this card is to preserve the visual style of Home Assistant's official `Tile` card while allowing you to control a value with a slider without using extra dashboard space.
 
-Con la solución por defecto de Home Assistant, muchas veces necesitas una tarjeta para la entidad y otra fila o feature para el slider. En dashboards densos eso acaba ocupando dos espacios: uno para ver la entidad y otro para controlarla.
+With the default Home Assistant setup, you often need one area for the entity itself and another row or feature for the slider. In dense dashboards, that usually means two visual spaces: one to see the entity and another one to control it.
 
-`Tile Slider Card` intenta resolver justo eso: nombre, estado, icono, acciones y slider en una única tarjeta compacta.
+`Tile Slider Card` solves that by combining the name, state, icon, actions, and slider into one compact card.
 
-## Características
+## Features
 
-- Estilo inspirado en la tarjeta `Tile` de Home Assistant.
-- Slider integrado en la propia tarjeta.
-- Compatible con editor visual.
-- Soporte para acciones oficiales de Home Assistant.
-- Contenido de estado configurable con el selector oficial `state_content`.
-- Selector de valor del slider: `Estado` o `Atributo`.
-- Lista dinámica de atributos numéricos de la entidad.
-- Placeholder con el atributo por defecto del slider.
-- Traducciones del editor según el idioma del usuario.
-- Modo horizontal o vertical para el contenido.
-- Opción para ocultar el estado siempre.
-- Opción para ocultar el estado solo si la entidad está apagada.
-- Opción para quitar el color del slider si la entidad está apagada.
-- Icono sin círculo visual cuando el icono no tiene acción propia.
-- Sensores numéricos en modo solo lectura como barra de progreso.
+- Visual style inspired by Home Assistant's `Tile` card.
+- Slider integrated directly into the card.
+- Visual editor support.
+- Official Home Assistant actions support.
+- Configurable state content using Home Assistant's official `state_content` selector.
+- Slider value source selector: `State` or `Attribute`.
+- Dynamic list of numeric attributes from the selected entity.
+- Placeholder showing the default slider attribute.
+- Editor translations based on the user's language.
+- Horizontal or vertical content layout.
+- Option to always hide the state.
+- Option to hide the state only when the entity is off.
+- Option to remove the slider color when the entity is off.
+- Icon background is removed when the icon has no dedicated action.
+- Numeric sensors are shown as read-only progress bars.
 
-## Instalación manual
+## Manual Installation
 
-1. Copia el archivo compilado:
+1. Copy the compiled file:
 
 ```text
 dist/tile-slider-card.js
 ```
 
-en la carpeta `www` de Home Assistant:
+to your Home Assistant `www` folder:
 
 ```text
 /config/www/tile-slider-card.js
 ```
 
-2. Añade el recurso en Home Assistant:
+2. Add the resource in Home Assistant:
 
 ```yaml
 url: /local/tile-slider-card.js?v=0.3.26
 type: module
 ```
 
-Puedes hacerlo desde:
+You can do this from:
 
 ```text
-Ajustes > Dashboards > Recursos
+Settings > Dashboards > Resources
 ```
 
-3. Recarga el navegador. Si no ves los cambios, limpia la caché o cambia el parámetro `?v=`.
+3. Reload your browser. If you do not see the latest version, clear the browser cache or change the `?v=` parameter.
 
-## Uso básico
+## Basic Usage
 
 ```yaml
 type: custom:tile-slider-card
-entity: light.salon
+entity: light.living_room
 ```
 
-La tarjeta intentará elegir automáticamente el mejor valor para el slider según el dominio de la entidad.
+The card will automatically try to choose the best slider value for the selected entity domain.
 
-## Entidades soportadas
+## Supported Entities
 
-La tarjeta puede mostrar cualquier entidad como una tarjeta compacta. El slider aparece cuando la entidad tiene un valor numérico compatible.
+The card can display any entity as a compact tile. The slider appears when the entity has a compatible numeric value.
 
-| Dominio | Valor por defecto del slider | Control |
+| Domain | Default Slider Value | Control |
 | --- | --- | --- |
-| `light` | atributo `brightness` | `light.turn_on` con `brightness` |
-| `cover` | atributo `current_position` | `cover.set_cover_position` |
-| `fan` | atributo `percentage` | `fan.set_percentage` |
-| `climate` | atributo `temperature` | `climate.set_temperature` |
-| `water_heater` | atributo `temperature` | `water_heater.set_temperature` |
-| `input_number` | estado de la entidad | `input_number.set_value` |
-| `number` | estado de la entidad | `number.set_value` |
-| `sensor` numérico | estado de la entidad | solo lectura |
+| `light` | `brightness` attribute | `light.turn_on` with `brightness` |
+| `cover` | `current_position` attribute | `cover.set_cover_position` |
+| `fan` | `percentage` attribute | `fan.set_percentage` |
+| `climate` | `temperature` attribute | `climate.set_temperature` |
+| `water_heater` | `temperature` attribute | `water_heater.set_temperature` |
+| `input_number` | entity state | `input_number.set_value` |
+| `number` | entity state | `number.set_value` |
+| numeric `sensor` | entity state | read-only |
 
-Los sensores solo muestran una barra de progreso. No se pueden controlar desde el slider.
+Sensors are shown as progress bars only. They cannot be controlled from the slider.
 
-## Valores por defecto del slider
+## Slider Defaults
 
-Para la mayoría de entidades:
+For most entities:
 
 ```yaml
 min: 0
@@ -93,7 +93,7 @@ max: 100
 step: 1
 ```
 
-Para luces:
+For lights:
 
 ```yaml
 min: 0
@@ -101,48 +101,48 @@ max: 255
 step: 1
 ```
 
-Para `climate` y `water_heater`:
+For `climate` and `water_heater`:
 
 ```yaml
-min: atributo min_temp
-max: atributo temperature
-step: atributo target_temp_step
+min: min_temp attribute
+max: temperature attribute
+step: target_temp_step attribute
 ```
 
-Si falta algún atributo, la tarjeta usa valores de respaldo razonables.
+If any of those attributes are missing, the card uses reasonable fallback values.
 
-## Valor del slider
+## Slider Value
 
-En el editor visual puedes elegir:
+In the visual editor, you can choose:
 
-- `Estado`: usa el estado numérico de la entidad.
-- `Atributo`: usa un atributo numérico de la entidad.
+- `State`: use the numeric state of the entity.
+- `Attribute`: use a numeric attribute from the entity.
 
-Cuando se usa `Atributo`, el desplegable muestra atributos numéricos detectados dinámicamente. Si no eliges ninguno, se usa el atributo por defecto del dominio y aparece como placeholder.
+When `Attribute` is selected, the dropdown shows numeric attributes detected from the entity. If you do not choose one, the card uses the default attribute for the entity domain and shows it as a placeholder.
 
-Ejemplo:
+Example:
 
 ```yaml
 type: custom:tile-slider-card
-entity: light.salon
+entity: light.living_room
 slider:
   attribute: brightness
 ```
 
-Ejemplo usando el estado:
+Example using the entity state:
 
 ```yaml
 type: custom:tile-slider-card
-entity: input_number.volumen
+entity: input_number.volume
 slider:
   value_source: state
 ```
 
-## Configuración del slider
+## Slider Configuration
 
 ```yaml
 type: custom:tile-slider-card
-entity: light.salon
+entity: light.living_room
 slider:
   value_source: attribute
   attribute: brightness
@@ -152,48 +152,48 @@ slider:
   controllable: true
 ```
 
-| Opción | Tipo | Descripción |
+| Option | Type | Description |
 | --- | --- | --- |
-| `slider.value_source` | `state` / `attribute` | Decide si el slider usa el estado o un atributo. |
-| `slider.attribute` | string | Atributo numérico que controla el slider. |
-| `slider.min` | number | Valor mínimo. |
-| `slider.max` | number | Valor máximo. |
-| `slider.step` | number | Incremento del slider. |
-| `slider.controllable` | boolean | Si es `false`, el slider se muestra pero no permite cambiar el valor. |
+| `slider.value_source` | `state` / `attribute` | Chooses whether the slider uses the entity state or an attribute. |
+| `slider.attribute` | string | Numeric attribute controlled by the slider. |
+| `slider.min` | number | Minimum value. |
+| `slider.max` | number | Maximum value. |
+| `slider.step` | number | Slider increment. |
+| `slider.controllable` | boolean | If `false`, the slider is displayed but cannot change the value. |
 
-## Contenido del estado
+## State Content
 
-El campo `state_content` usa el selector oficial de Home Assistant. Puedes mostrar el estado, atributos u otros contenidos compatibles.
+The `state_content` field uses Home Assistant's official selector. You can show the state, attributes, or other supported content.
 
 ```yaml
 type: custom:tile-slider-card
-entity: climate.salon
+entity: climate.living_room
 state_content:
   - state
   - current_temperature
   - temperature
 ```
 
-Si ocultas el estado, la tarjeta elimina `state` del contenido visible cuando corresponde.
+If the state is hidden, the card removes `state` from the visible content when needed.
 
-## Diseño del contenido
+## Content Layout
 
-Puedes elegir el diseño desde el editor visual o con YAML:
+You can choose the layout from the visual editor or YAML:
 
 ```yaml
 type: custom:tile-slider-card
-entity: light.salon
+entity: light.living_room
 vertical: true
 ```
 
-Por defecto usa diseño horizontal.
+The default layout is horizontal.
 
-## Opciones visuales
+## Visual Options
 
 ```yaml
 type: custom:tile-slider-card
-entity: light.salon
-name: Luz salón
+entity: light.living_room
+name: Living room light
 icon: mdi:lamp
 color: amber
 show_entity_picture: false
@@ -202,41 +202,41 @@ hide_state_when_off: true
 hide_slider_when_off: true
 ```
 
-| Opción | Descripción |
+| Option | Description |
 | --- | --- |
-| `name` | Nombre mostrado en la tarjeta. Compatible con el selector oficial de nombre de entidad. |
-| `icon` | Icono personalizado. |
-| `color` | Color activo. También puede usar el color por estado. |
-| `show_entity_picture` | Muestra la imagen de la entidad si existe. |
-| `hide_state` | Oculta el estado siempre. |
-| `hide_state_when_off` | Oculta el estado solo cuando la entidad está `off`. |
-| `hide_slider_when_off` | Quita el color del slider cuando la entidad está `off`. |
+| `name` | Name shown in the card. Compatible with the official entity name selector. |
+| `icon` | Custom icon. |
+| `color` | Active color. It can also use state-based color. |
+| `show_entity_picture` | Shows the entity picture when available. |
+| `hide_state` | Always hides the state. |
+| `hide_state_when_off` | Hides the state only when the entity is `off`. |
+| `hide_slider_when_off` | Removes the slider color when the entity is `off`. |
 
-## Acciones
+## Actions
 
-La tarjeta usa las acciones oficiales de Home Assistant.
+The card uses official Home Assistant actions.
 
-Por defecto:
+Defaults:
 
-- Tocar la tarjeta abre `more-info`.
-- Tocar el icono hace `toggle`.
+- Tapping the card opens `more-info`.
+- Tapping the icon performs `toggle`.
 
-Ejemplo:
+Example:
 
 ```yaml
 type: custom:tile-slider-card
-entity: light.salon
+entity: light.living_room
 tap_action:
   action: more-info
 icon_tap_action:
   action: toggle
 ```
 
-También puedes configurar acciones de mantener pulsado o doble toque:
+You can also configure hold and double-tap actions:
 
 ```yaml
 type: custom:tile-slider-card
-entity: cover.persiana_salon
+entity: cover.living_room_blind
 tap_action:
   action: more-info
 icon_tap_action:
@@ -247,7 +247,7 @@ double_tap_action:
   action: none
 ```
 
-Acciones disponibles:
+Available actions:
 
 - `tap_action`
 - `hold_action`
@@ -256,15 +256,15 @@ Acciones disponibles:
 - `icon_hold_action`
 - `icon_double_tap_action`
 
-Si el icono no tiene ninguna acción propia, la tarjeta elimina el círculo de fondo del icono para que no parezca un botón separado.
+If the icon has no dedicated action, the card removes the icon background so it does not look like a separate button.
 
-## Ejemplos
+## Examples
 
-### Luz
+### Light
 
 ```yaml
 type: custom:tile-slider-card
-entity: light.salon
+entity: light.living_room
 state_content:
   - state
   - brightness
@@ -272,11 +272,11 @@ icon_tap_action:
   action: toggle
 ```
 
-### Persiana o cover
+### Cover
 
 ```yaml
 type: custom:tile-slider-card
-entity: cover.persiana_salon
+entity: cover.living_room_blind
 state_content:
   - state
   - current_position
@@ -284,11 +284,11 @@ icon_tap_action:
   action: toggle
 ```
 
-### Clima
+### Climate
 
 ```yaml
 type: custom:tile-slider-card
-entity: climate.salon
+entity: climate.living_room
 state_content:
   - state
   - current_temperature
@@ -297,11 +297,11 @@ slider:
   attribute: temperature
 ```
 
-### Clima solo lectura
+### Read-Only Climate
 
 ```yaml
 type: custom:tile-slider-card
-entity: climate.salon
+entity: climate.living_room
 slider:
   controllable: false
 state_content:
@@ -309,11 +309,11 @@ state_content:
   - temperature
 ```
 
-### Calentador de agua
+### Water Heater
 
 ```yaml
 type: custom:tile-slider-card
-entity: water_heater.termo
+entity: water_heater.boiler
 state_content:
   - state
   - temperature
@@ -321,11 +321,11 @@ slider:
   attribute: temperature
 ```
 
-### Ventilador
+### Fan
 
 ```yaml
 type: custom:tile-slider-card
-entity: fan.ventilador
+entity: fan.living_room_fan
 state_content:
   - state
   - percentage
@@ -333,11 +333,11 @@ slider:
   attribute: percentage
 ```
 
-### Input number
+### Input Number
 
 ```yaml
 type: custom:tile-slider-card
-entity: input_number.volumen
+entity: input_number.volume
 slider:
   value_source: state
   min: 0
@@ -345,11 +345,11 @@ slider:
   step: 5
 ```
 
-### Sensor de consumo
+### Energy Sensor
 
 ```yaml
 type: custom:tile-slider-card
-entity: sensor.consumo_actual
+entity: sensor.current_power
 slider:
   value_source: state
   min: 0
@@ -358,23 +358,23 @@ state_content:
   - state
 ```
 
-Los sensores numéricos se muestran como progreso de solo lectura. Para consumo eléctrico suele quedar mejor fijar `max` manualmente.
+Numeric sensors are shown as read-only progress bars. For power usage, setting `max` manually usually gives a better result.
 
-### Ocultar estado y color del slider cuando está apagado
+### Hide State and Slider Color When Off
 
 ```yaml
 type: custom:tile-slider-card
-entity: light.salon
+entity: light.living_room
 hide_state_when_off: true
 hide_slider_when_off: true
 ```
 
-## Configuración completa
+## Full Configuration
 
 ```yaml
 type: custom:tile-slider-card
-entity: light.salon
-name: Luz salón
+entity: light.living_room
+name: Living room light
 icon: mdi:lamp
 color: amber
 show_entity_picture: false
@@ -406,36 +406,36 @@ icon_double_tap_action:
   action: none
 ```
 
-No necesitas definir todas las opciones. La mayoría tienen valores por defecto.
+You do not need to define every option. Most of them have defaults.
 
-## Desarrollo
+## Development
 
-Instala dependencias:
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-Compila:
+Build:
 
 ```bash
 npm run build
 ```
 
-El archivo final se genera en:
+The final file is generated at:
 
 ```text
 dist/tile-slider-card.js
 ```
 
-Comprobar TypeScript:
+Type-check:
 
 ```bash
 node ./node_modules/typescript/bin/tsc --noEmit
 ```
 
-## Notas
+## Notes
 
-- El servicio personalizado existe internamente, pero está oculto del editor visual por ahora.
-- Si Home Assistant no muestra el último cambio, recarga el recurso o cambia el parámetro de versión del archivo JavaScript.
-- Para sensores, el slider es solo lectura aunque aparezca como barra de progreso.
+- Custom service support exists internally, but it is currently hidden from the visual editor.
+- If Home Assistant does not show the latest change, reload the resource or change the JavaScript file version parameter.
+- Sensors are read-only even when displayed as a slider-like progress bar.
