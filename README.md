@@ -49,7 +49,7 @@ to your Home Assistant `www` folder:
 2. Add the resource in Home Assistant:
 
 ```yaml
-url: /local/tile-slider-card.js?v=0.3.26
+url: /local/tile-slider-card.js?v=0.3.27
 type: module
 ```
 
@@ -60,6 +60,39 @@ Settings > Dashboards > Resources
 ```
 
 3. Reload your browser. If you do not see the latest version, clear the browser cache or change the `?v=` parameter.
+
+## HACS Custom Repository
+
+This card can be added to HACS as a custom Dashboard repository.
+
+1. Publish this project as a public GitHub repository.
+2. Make sure the compiled file exists at:
+
+```text
+dist/tile-slider-card.js
+```
+
+3. In Home Assistant, open HACS.
+4. Click the three-dot menu in the top-right corner.
+5. Select `Custom repositories`.
+6. Paste your GitHub repository URL.
+7. Select `Dashboard` as the repository type.
+8. Click `ADD`.
+9. Install the card from HACS.
+10. Refresh the browser cache after installation.
+
+HACS should then serve the card from:
+
+```text
+/hacsfiles/tile-slider-card/tile-slider-card.js
+```
+
+Use it in Lovelace with:
+
+```yaml
+type: custom:tile-slider-card
+entity: light.living_room
+```
 
 ## Basic Usage
 

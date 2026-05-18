@@ -1,5 +1,5 @@
 // src/tile-slider-card.ts
-var VERSION = "0.3.25";
+var VERSION = "0.3.27";
 console.info("%c TILE-SLIDER-CARD %c ".concat(VERSION, " "), "color: pink; background: purple; font-weight: 700;", "color: purple; background: pink; font-weight: 700;");
 var OPTIONAL_ACTION_KEYS = [
   "hold_action",
@@ -67,7 +67,6 @@ var EN_TRANSLATION = {
     attribute: "Optional. Real entity attribute controlled by the slider. Leave empty to choose one automatically by domain.",
     service: "Select a Home Assistant service, or type domain.service manually.",
     service_data: "Optional. You can use {{ value }} and {{ entity_id }}.",
-    state_content: "Real entity attributes shown as state chips. Custom values are allowed.",
     tap_action: "Official Home Assistant action for tapping the tile.",
     hold_action: "Official Home Assistant action for holding the tile.",
     double_tap_action: "Official Home Assistant action for double tapping the tile.",

@@ -100,7 +100,7 @@ type HassAction = 'tap' | 'hold' | 'double_tap';
 type ActionSurface = 'tile' | 'icon';
 type OptionalActionKey = 'hold_action' | 'icon_hold_action' | 'double_tap_action' | 'icon_double_tap_action';
 
-const VERSION = '0.3.25';
+const VERSION = '0.3.27';
 console.info("%c TILE-SLIDER-CARD %c ".concat(VERSION," "),"color: pink; background: purple; font-weight: 700;","color: purple; background: pink; font-weight: 700;");
 
 const OPTIONAL_ACTION_KEYS: OptionalActionKey[] = [
