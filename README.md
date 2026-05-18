@@ -49,7 +49,7 @@ to your Home Assistant `www` folder:
 2. Add the resource in Home Assistant:
 
 ```yaml
-url: /local/tile-slider-card.js?v=0.3.27
+url: /local/tile-slider-card.js?v=0.3.28
 type: module
 ```
 

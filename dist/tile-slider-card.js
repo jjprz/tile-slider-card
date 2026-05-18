@@ -1,5 +1,5 @@
 // src/tile-slider-card.ts
-var VERSION = "0.3.27";
+var VERSION = "0.3.28";
 console.info("%c TILE-SLIDER-CARD %c ".concat(VERSION, " "), "color: pink; background: purple; font-weight: 700;", "color: purple; background: pink; font-weight: 700;");
 var OPTIONAL_ACTION_KEYS = [
   "hold_action",
@@ -1533,7 +1533,7 @@ var TileSliderCard = class extends HTMLElement {
     return typeof this._hass?.hassUrl === "function" ? this._hass.hassUrl(path) : path;
   }
   activeColor(color, entity) {
-    if (!color || color === "state") return stateActiveColor(entity);
+    if (!color || color === "state") return this.stateColor(entity);
     if (color === "entity") return this.entityColor(entity) || stateActiveColor(entity);
     if (color === "primary") return "var(--primary-color)";
     if (color === "accent") return "var(--accent-color)";
@@ -1554,16 +1554,25 @@ var TileSliderCard = class extends HTMLElement {
     }
     return `var(--disabled-color, var(--secondary-text-color))`;
   }
+  stateColor(entity) {
+    return this.lightRgbColor(entity) || stateActiveColor(entity);
+  }
+  lightRgbColor(entity) {
+    if (!entity || entity.entity_id.split(".")[0] !== "light") return void 0;
+    return this.rgbColor(entity.attributes?.rgb_color);
+  }
+  rgbColor(rgb) {
+    if (!Array.isArray(rgb) || rgb.length < 3) return void 0;
+    const [r, g, b] = rgb.map((value) => Math.round(Number(value)));
+    if (![r, g, b].every((value) => Number.isFinite(value))) return void 0;
+    return `rgb(${this.clamp(r, 0, 255)}, ${this.clamp(g, 0, 255)}, ${this.clamp(b, 0, 255)})`;
+  }
   entityColor(entity) {
     if (!entity) return void 0;
     const attrs = entity.attributes || {};
     const rgb = attrs.rgb_color || attrs.rgbw_color || attrs.rgbww_color;
-    if (Array.isArray(rgb) && rgb.length >= 3) {
-      const [r, g, b] = rgb.map((value) => Math.round(Number(value)));
-      if ([r, g, b].every((value) => Number.isFinite(value))) {
-        return `rgb(${this.clamp(r, 0, 255)}, ${this.clamp(g, 0, 255)}, ${this.clamp(b, 0, 255)})`;
-      }
-    }
+    const rgbColor = this.rgbColor(rgb);
+    if (rgbColor) return rgbColor;
     const hs = attrs.hs_color;
     if (Array.isArray(hs) && hs.length >= 2) {
       const [r, g, b] = this.hsToRgb(Number(hs[0]), Number(hs[1]));

@@ -100,7 +100,7 @@ type HassAction = 'tap' | 'hold' | 'double_tap';
 type ActionSurface = 'tile' | 'icon';
 type OptionalActionKey = 'hold_action' | 'icon_hold_action' | 'double_tap_action' | 'icon_double_tap_action';
 
-const VERSION = '0.3.27';
+const VERSION = '0.3.28';
 console.info("%c TILE-SLIDER-CARD %c ".concat(VERSION," "),"color: pink; background: purple; font-weight: 700;","color: purple; background: pink; font-weight: 700;");
 
 const OPTIONAL_ACTION_KEYS: OptionalActionKey[] = [
@@ -1930,7 +1930,7 @@ class TileSliderCard extends HTMLElement {
   }
 
   private activeColor(color?: string, entity?: HassEntity): string {
-    if (!color || color === 'state') return stateActiveColor(entity);
+    if (!color || color === 'state') return this.stateColor(entity);
     if (color === 'entity') return this.entityColor(entity) || stateActiveColor(entity);
     if (color === 'primary') return 'var(--primary-color)';
     if (color === 'accent') return 'var(--accent-color)';
@@ -1953,16 +1953,30 @@ class TileSliderCard extends HTMLElement {
     return `var(--disabled-color, var(--secondary-text-color))`;
   }
 
+  private stateColor(entity?: HassEntity): string {
+    return this.lightRgbColor(entity) || stateActiveColor(entity);
+  }
+
+  private lightRgbColor(entity?: HassEntity): string | undefined {
+    if (!entity || entity.entity_id.split('.')[0] !== 'light') return undefined;
+    return this.rgbColor(entity.attributes?.rgb_color);
+  }
+
+  private rgbColor(rgb: any): string | undefined {
+    if (!Array.isArray(rgb) || rgb.length < 3) return undefined;
+
+    const [r, g, b] = rgb.map((value: any) => Math.round(Number(value)));
+    if (![r, g, b].every(value => Number.isFinite(value))) return undefined;
+
+    return `rgb(${this.clamp(r, 0, 255)}, ${this.clamp(g, 0, 255)}, ${this.clamp(b, 0, 255)})`;
+  }
+
   private entityColor(entity?: HassEntity): string | undefined {
     if (!entity) return undefined;
     const attrs = entity.attributes || {};
     const rgb = attrs.rgb_color || attrs.rgbw_color || attrs.rgbww_color;
-    if (Array.isArray(rgb) && rgb.length >= 3) {
-      const [r, g, b] = rgb.map((value: any) => Math.round(Number(value)));
-      if ([r, g, b].every(value => Number.isFinite(value))) {
-        return `rgb(${this.clamp(r, 0, 255)}, ${this.clamp(g, 0, 255)}, ${this.clamp(b, 0, 255)})`;
-      }
-    }
+    const rgbColor = this.rgbColor(rgb);
+    if (rgbColor) return rgbColor;
 
     const hs = attrs.hs_color;
     if (Array.isArray(hs) && hs.length >= 2) {
