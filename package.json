@@ -1,0 +1,1 @@
+{"name":"tile-slider-card","version":"0.3.26","type":"module","scripts":{"build":"esbuild src/tile-slider-card.ts --bundle --format=esm --target=es2020 --outfile=dist/tile-slider-card.js"},"devDependencies":{"esbuild":"^0.25.0","typescript":"^5.0.0"}}
